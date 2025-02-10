@@ -9,9 +9,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
@@ -20,9 +17,6 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         DB::prohibitDestructiveCommands(app()->isProduction());
