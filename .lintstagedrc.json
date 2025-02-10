@@ -1,0 +1,9 @@
+{
+    "*.{css,json}": ["prettier --write"],
+    "*.{js,vue}": [
+        "prettier --write",
+        "eslint --ignore-pattern .gitignore --fix",
+        "vitest related --run --environment=jsdom"
+    ],
+    "**/*.php*": ["./vendor/bin/duster fix --dirty"]
+}
