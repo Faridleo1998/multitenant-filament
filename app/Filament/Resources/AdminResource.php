@@ -103,6 +103,10 @@ class AdminResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->badge()
+                    ->color('success')
+                    ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
                     ->datetime()
                     ->sortable(),
