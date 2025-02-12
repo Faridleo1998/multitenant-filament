@@ -84,6 +84,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->authGuard('admin');
+            ->authGuard('admin')
+            ->readOnlyRelationManagersOnResourceViewPagesByDefault(false);
     }
 }
