@@ -114,8 +114,9 @@ class TenantResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->toggleable()
                     ->searchable()
+                    ->copyable()
+                    ->toggleable()
                     ->hidden(! Auth::user()->is_super_admin),
                 Tables\Columns\TextColumn::make('identification')
                     ->sortable(),
