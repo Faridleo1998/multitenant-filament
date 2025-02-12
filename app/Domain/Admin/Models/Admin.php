@@ -5,10 +5,11 @@ namespace App\Domain\Admin\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use HasRoles, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'name',
