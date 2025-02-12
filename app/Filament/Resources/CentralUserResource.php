@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Domain\Tenant\Actions\RemoveUsersFromAllTenantsAction;
 use App\Domain\User\Models\CentralUser;
 use App\Filament\Resources\CentralUserResource\Pages;
+use App\Filament\Resources\CentralUserResource\RelationManagers\TenantsRelationManager;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -31,6 +33,8 @@ class CentralUserResource extends Resource implements HasShieldPermissions
             'update',
             'delete',
             'restore',
+            'attach_tenant',
+            'detach_tenant',
         ];
     }
 
@@ -101,7 +105,13 @@ class CentralUserResource extends Resource implements HasShieldPermissions
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(
+                        fn(
+                            CentralUser $record,
+                            RemoveUsersFromAllTenantsAction $removeUsersFromAllTenantsAction
+                        ) => $removeUsersFromAllTenantsAction->execute($record)
+                    ),
                 Tables\Actions\RestoreAction::make(),
             ]);
     }
@@ -109,7 +119,7 @@ class CentralUserResource extends Resource implements HasShieldPermissions
     public static function getRelations(): array
     {
         return [
-            //
+            TenantsRelationManager::class,
         ];
     }
 
