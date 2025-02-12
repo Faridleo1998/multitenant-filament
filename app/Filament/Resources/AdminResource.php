@@ -20,6 +20,8 @@ class AdminResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
+    protected static ?string $navigationGroup = 'Settings';
+
     public static function getPermissionPrefixes(): array
     {
         return [
