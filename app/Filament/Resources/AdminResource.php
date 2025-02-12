@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class AdminResource extends Resource implements HasShieldPermissions
 {
@@ -87,7 +88,7 @@ class AdminResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->columnSpanFull()
                     ->disabled(
-                        fn(?Admin $record): bool => $record?->is_super_admin ?? false
+                        fn(?Admin $record): bool => $record?->is_super_admin || Auth::id() === $record?->id
                     ),
             ]);
     }
@@ -110,6 +111,8 @@ class AdminResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->actions([
+                Impersonate::make()
+                    ->redirectTo('admin'),
                 Tables\Actions\ViewAction::make()
                     ->modalWidth(MaxWidth::Small),
                 Tables\Actions\EditAction::make()
@@ -129,7 +132,7 @@ class AdminResource extends Resource implements HasShieldPermissions
     {
         $query = parent::getEloquentQuery()->select(['id', 'name', 'email', 'created_at', 'deleted_at']);
 
-        Auth::user()->is_super_admin ?: $query->where('is_super_admin', false);
+        Auth::user()->is_super_admin ?: $query->whereNot('id', Admin::SUPER_ADMIN_ID);
 
         return $query;
     }
