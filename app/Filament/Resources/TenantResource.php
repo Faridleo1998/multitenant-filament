@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Domain\Tenant\Models\Tenant;
 use App\Filament\Resources\TenantResource\Pages;
+use App\Filament\Resources\TenantResource\RelationManagers\CentralUsersRelationManager;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -32,6 +33,8 @@ class TenantResource extends Resource implements HasShieldPermissions
             'view_any',
             'create',
             'update',
+            'attach_central_user',
+            'detach_central_user',
         ];
     }
 
@@ -137,7 +140,7 @@ class TenantResource extends Resource implements HasShieldPermissions
     public static function getRelations(): array
     {
         return [
-            //
+            CentralUsersRelationManager::class,
         ];
     }
 
