@@ -15,6 +15,7 @@
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "rawilk/filament-password-input": "^2.0",
+        "stancl/tenancy": "^3.8",
         "stechstudio/filament-impersonate": "^3.15"
     },
     "require-dev": {
