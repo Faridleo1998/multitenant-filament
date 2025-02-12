@@ -19,4 +19,11 @@ trait AdminAttributes
             set: fn($value): string => strtolower($value)
         );
     }
+
+    protected function isSuperAdmin(): Attribute
+    {
+        return new Attribute(
+            get: fn(): bool => $this->hasRole('super_admin')
+        );
+    }
 }
