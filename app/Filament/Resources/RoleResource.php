@@ -23,6 +23,8 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?string $navigationGroup = 'Settings';
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -158,13 +160,6 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function shouldRegisterNavigation(): bool
     {
         return Utils::isResourceNavigationRegistered();
-    }
-
-    public static function getNavigationGroup(): ?string
-    {
-        return Utils::isResourceNavigationGroupEnabled()
-            ? __('filament-shield::filament-shield.nav.group')
-            : '';
     }
 
     public static function getNavigationLabel(): string
