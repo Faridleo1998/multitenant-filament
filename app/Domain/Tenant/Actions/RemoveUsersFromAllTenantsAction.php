@@ -20,7 +20,7 @@ class RemoveUsersFromAllTenantsAction
         $tenants->each(fn(Tenant $tenant) => $tenant->run(
             function () use ($globalIds, $tenant) {
                 User::whereIn('global_id', $globalIds)->delete();
-                $tenant->users()->detach($globalIds);
+                $tenant->centralUsers()->detach($globalIds);
             }
         ));
     }
