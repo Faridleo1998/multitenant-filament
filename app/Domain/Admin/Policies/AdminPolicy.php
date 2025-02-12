@@ -28,9 +28,12 @@ class AdminPolicy
         return $admin->can('create_admin');
     }
 
-    public function update(Admin $admin): bool
+    public function update(Admin $admin, Admin $record): bool
     {
-        return $admin->can('update_admin');
+        $canUpdate = $admin->can('update_admin');
+        $isNotDeleted = $record->deleted_at === null;
+
+        return $canUpdate && $isNotDeleted;
     }
 
     public function delete(Admin $admin, Admin $record): bool
