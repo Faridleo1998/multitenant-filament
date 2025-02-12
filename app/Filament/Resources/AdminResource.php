@@ -12,6 +12,7 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
 
@@ -122,5 +123,14 @@ class AdminResource extends Resource implements HasShieldPermissions
         return [
             'index' => Pages\ManageAdmins::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery()->select(['id', 'name', 'email', 'created_at', 'deleted_at']);
+
+        Auth::user()->is_super_admin ?: $query->where('is_super_admin', false);
+
+        return $query;
     }
 }
