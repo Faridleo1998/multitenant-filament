@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             WorldSeeder::class,
             ShieldSeeder::class,
+            CentralUserSeeder::class,
+            TenantSeeder::class,
         ]);
     }
 }
