@@ -46,4 +46,14 @@ class CentralUserPolicy
     {
         return $admin->can('restore_central::user');
     }
+
+    public function attachTenant(Admin $admin): bool
+    {
+        return $admin->can('attach_tenant_central::user');
+    }
+
+    public function detachTenant(Admin $admin): bool
+    {
+        return $admin->can('detach_tenant_central::user');
+    }
 }
