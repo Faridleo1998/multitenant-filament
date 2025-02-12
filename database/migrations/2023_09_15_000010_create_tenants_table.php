@@ -16,11 +16,23 @@ class CreateTenantsTable extends Migration
             $table->string('identification', 100)->unique();
             $table->string('name', 100)->unique();
             $table->string('phone', 100);
-            $table->string('email_contact', 100)->nullable();
+            $table->string('email', 100)->nullable();
             $table->string('address', 255)->nullable();
             $table->jsonb('data')->nullable();
 
             $table->timestamps();
+
+            $table->unsignedBigInteger('country_id')
+                ->nullable()
+                ->constrained('countries');
+
+            $table->unsignedBigInteger('state_id')
+                ->nullable()
+                ->constrained('states');
+
+            $table->unsignedBigInteger('city_id')
+                ->nullable()
+                ->constrained('cities');
         });
     }
 
