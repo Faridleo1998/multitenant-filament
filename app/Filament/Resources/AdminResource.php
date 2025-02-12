@@ -40,7 +40,10 @@ class AdminResource extends Resource implements HasShieldPermissions
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->disabled(
+                        fn(?Admin $record): bool => $record?->is_super_admin ?? false
+                    ),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -48,7 +51,10 @@ class AdminResource extends Resource implements HasShieldPermissions
                     ->endsWith('@' . config('system.domain'))
                     ->autocomplete(false)
                     ->columnSpanFull()
-                    ->placeholder('jhon_doe@' . config('system.domain')),
+                    ->placeholder('jhon_doe@' . config('system.domain'))
+                    ->disabled(
+                        fn(?Admin $record): bool => $record?->is_super_admin ?? false
+                    ),
                 Password::make('password')
                     ->autocomplete(false)
                     ->regeneratePassword(notify: false)
@@ -85,6 +91,8 @@ class AdminResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->modalWidth(MaxWidth::Small),
                 Tables\Actions\EditAction::make()
                     ->modalWidth(MaxWidth::Small),
                 Tables\Actions\DeleteAction::make(),
