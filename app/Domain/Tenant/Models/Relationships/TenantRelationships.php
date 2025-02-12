@@ -2,13 +2,20 @@
 
 namespace App\Domain\Tenant\Models\Relationships;
 
+use App\Domain\User\Models\CentralUser;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 
 trait TenantRelationships
 {
+    public function centralUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(CentralUser::class, 'tenant_users', 'tenant_id', 'global_user_id');
+    }
+
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
