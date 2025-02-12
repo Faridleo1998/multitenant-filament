@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
 
@@ -70,6 +71,23 @@ class AdminResource extends Resource implements HasShieldPermissions
                         fn(string $context): bool => $context === 'create'
                     )
                     ->columnSpanFull(),
+                Forms\Components\Select::make('roles')
+                    ->relationship(
+                        'roles',
+                        'name',
+                        modifyQueryUsing: function (Builder $query, ?Admin $record): Builder {
+                            return $record?->is_super_admin
+                                ? $query
+                                : $query->whereNot('name', 'super_admin');
+                        }
+                    )
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->columnSpanFull()
+                    ->disabled(
+                        fn(?Admin $record): bool => $record?->is_super_admin ?? false
+                    ),
             ]);
     }
 
