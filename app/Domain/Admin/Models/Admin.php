@@ -15,6 +15,8 @@ class Admin extends Authenticatable implements FilamentUser
     use AdminAttributes;
     use HasRoles, Notifiable, SoftDeletes;
 
+    const SUPER_ADMIN_ID = 1;
+
     protected $fillable = [
         'name',
         'email',
