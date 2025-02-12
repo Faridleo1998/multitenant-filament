@@ -4,6 +4,7 @@ namespace App\Domain\Admin\Policies;
 
 use App\Domain\Admin\Models\Admin;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class AdminPolicy
 {
@@ -14,9 +15,12 @@ class AdminPolicy
         return $admin->can('view_any_admin');
     }
 
-    public function view(Admin $admin): bool
+    public function view(Admin $admin, Admin $record): bool
     {
-        return $admin->can('view_admin');
+        $canNotUpdate = Gate::denies('update', $record);
+        $canView = $admin->can('view_admin');
+
+        return $canNotUpdate && $canView;
     }
 
     public function create(Admin $admin): bool
@@ -29,9 +33,12 @@ class AdminPolicy
         return $admin->can('update_admin');
     }
 
-    public function delete(Admin $admin): bool
+    public function delete(Admin $admin, Admin $record): bool
     {
-        return $admin->can('delete_admin');
+        $canDelete = $admin->can('delete_admin');
+        $isNotSuperAdmin = ! $record->is_super_admin;
+
+        return $canDelete && $isNotSuperAdmin;
     }
 
     public function restore(Admin $admin): bool
