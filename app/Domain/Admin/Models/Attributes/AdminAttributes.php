@@ -2,6 +2,7 @@
 
 namespace App\Domain\Admin\Models\Attributes;
 
+use App\Domain\Admin\Models\Admin;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait AdminAttributes
@@ -23,7 +24,7 @@ trait AdminAttributes
     protected function isSuperAdmin(): Attribute
     {
         return new Attribute(
-            get: fn(): bool => $this->hasRole('super_admin')
+            get: fn(): bool => $this->id === Admin::SUPER_ADMIN_ID
         );
     }
 }
