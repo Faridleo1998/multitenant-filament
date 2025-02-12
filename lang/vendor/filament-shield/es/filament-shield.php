@@ -76,5 +76,8 @@ return [
         'reorder' => 'Reordenar',
         'restore_any' => 'Restaurar varios',
         'replicate' => 'Replicar',
+
+        'attach_central_user' => 'Vincular usuario',
+        'detach_central_user' => 'Desvincular usuario',
     ],
 ];
