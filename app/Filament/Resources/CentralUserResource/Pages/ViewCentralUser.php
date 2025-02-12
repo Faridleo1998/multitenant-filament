@@ -3,17 +3,24 @@
 namespace App\Filament\Resources\CentralUserResource\Pages;
 
 use App\Filament\Resources\CentralUserResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewCentralUser extends ViewRecord
 {
     protected static string $resource = CentralUserResource::class;
 
-    protected function getHeaderActions(): array
+    public function hasCombinedRelationManagerTabsWithContent(): bool
     {
-        return [
-            Actions\EditAction::make(),
-        ];
+        return true;
+    }
+
+    public function getContentTabIcon(): ?string
+    {
+        return 'heroicon-o-home-modern';
+    }
+
+    public function getContentTabLabel(): ?string
+    {
+        return ucfirst(self::$resource::getModelLabel());
     }
 }
