@@ -78,6 +78,8 @@ class ShieldSeeder extends Seeder
                     'view_any_tenant',
                     'create_tenant',
                     'update_tenant',
+                    'attach_central_user_tenant',
+                    'detach_central_user_tenant',
                     'view_central::user',
                     'view_any_central::user',
                     'create_central::user',
