@@ -20,7 +20,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         DB::prohibitDestructiveCommands(app()->isProduction());
-        Model::shouldBeStrict(app()->isLocal());
         URL::forceHttps(app()->isProduction());
+        $this->shouldBeStrict(app()->isLocal());
+    }
+
+    public function shouldBeStrict($appIsLocal)
+    {
+        Model::preventLazyLoading($appIsLocal);
+        Model::preventAccessingMissingAttributes($appIsLocal);
     }
 }
