@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Domain\Admin\Models\Admin;
 use App\Filament\Resources\AdminResource\Pages;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +14,23 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
 
-class AdminResource extends Resource
+class AdminResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Admin::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'restore',
+        ];
+    }
 
     public static function form(Form $form): Form
     {
