@@ -37,6 +37,11 @@ class Admin extends Authenticatable implements FilamentUser
         return true;
     }
 
+    public function canBeImpersonated(): bool
+    {
+        return $this->deleted_at === null;
+    }
+
     protected function casts(): array
     {
         return [
