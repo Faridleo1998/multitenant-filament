@@ -74,6 +74,10 @@ class ShieldSeeder extends Seeder
                     'update_role',
                     'delete_role',
                     'delete_any_role',
+                    'view_tenant',
+                    'view_any_tenant',
+                    'create_tenant',
+                    'update_tenant',
                 ],
             ],
         ];
