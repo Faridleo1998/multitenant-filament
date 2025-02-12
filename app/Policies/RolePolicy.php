@@ -32,16 +32,18 @@ class RolePolicy
     public function update(Admin $admin, Role $role): bool
     {
         $canUpdate = $admin->can('update_role');
+        $hasNotRole = ! $admin->hasRole($role->name);
         $isNotSuperAdmin = $role->id !== 1;
 
-        return $canUpdate && $isNotSuperAdmin;
+        return $canUpdate && $hasNotRole && $isNotSuperAdmin;
     }
 
     public function delete(Admin $admin, Role $role): bool
     {
+        $hasNotRole = ! $admin->hasRole($role->name);
         $canDelete = $admin->can('delete_role');
         $isNotSuperAdmin = $role->id !== 1;
 
-        return $canDelete && $isNotSuperAdmin;
+        return $canDelete && $hasNotRole && $isNotSuperAdmin;
     }
 }
