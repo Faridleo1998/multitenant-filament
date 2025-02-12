@@ -134,7 +134,9 @@ class AdminResource extends Resource implements HasShieldPermissions
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery()->select(['id', 'name', 'email', 'created_at', 'deleted_at']);
+        $query = parent::getEloquentQuery()
+            ->with(['roles:id,name'])
+            ->select(['id', 'name', 'email', 'created_at', 'deleted_at']);
 
         Auth::user()->is_super_admin ?: $query->whereNot('id', Admin::SUPER_ADMIN_ID);
 
