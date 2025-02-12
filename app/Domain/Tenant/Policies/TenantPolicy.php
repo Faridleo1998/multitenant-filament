@@ -33,4 +33,14 @@ class TenantPolicy
     {
         return $admin->can('update_tenant');
     }
+
+    public function attachCentralUser(Admin $admin): bool
+    {
+        return $admin->can('attach_central_user_tenant');
+    }
+
+    public function detachCentralUser(Admin $admin): bool
+    {
+        return $admin->can('detach_central_user_tenant');
+    }
 }
