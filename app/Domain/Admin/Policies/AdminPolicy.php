@@ -36,9 +36,10 @@ class AdminPolicy
     public function delete(Admin $admin, Admin $record): bool
     {
         $canDelete = $admin->can('delete_admin');
+        $isNotSameAdmin = $admin->id !== $record->id;
         $isNotSuperAdmin = ! $record->is_super_admin;
 
-        return $canDelete && $isNotSuperAdmin;
+        return $canDelete && $isNotSameAdmin && $isNotSuperAdmin;
     }
 
     public function restore(Admin $admin): bool
