@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
 use STS\FilamentImpersonate\Tables\Actions\Impersonate;
@@ -112,7 +113,7 @@ class AdminResource extends Resource implements HasShieldPermissions
                     ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Impersonate::make()
@@ -122,6 +123,7 @@ class AdminResource extends Resource implements HasShieldPermissions
                 Tables\Actions\EditAction::make()
                     ->modalWidth(MaxWidth::Small),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ]);
     }
 
@@ -139,6 +141,10 @@ class AdminResource extends Resource implements HasShieldPermissions
             ->select(['id', 'name', 'email', 'created_at', 'deleted_at']);
 
         Auth::user()->is_super_admin ?: $query->whereNot('id', Admin::SUPER_ADMIN_ID);
+
+        if (Gate::allows('restore', Admin::class)) {
+            $query->withTrashed();
+        }
 
         return $query;
     }
