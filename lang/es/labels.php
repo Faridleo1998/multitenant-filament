@@ -12,4 +12,6 @@ return [
     'password' => 'Contraseña',
     'state' => 'Estado',
     'address' => 'Dirección',
+    'domain' => 'Dominio',
+    'site' => 'Sitio',
 ];
