@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Providers\TenancyServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-Route::group([
-    'prefix' => '/{tenant}',
-    'middleware' => [InitializeTenancyByPath::class],
-], function () {
-    Route::get('/', fn() => 'Tenant: ' . tenant('id'));
+Route::middleware([
+    'web',
+    TenancyServiceProvider::TENANCY_IDENTIFICATION,
+    PreventAccessFromCentralDomains::class,
+])->group(function () {
+    Route::get('/', function () {
+        return to_route('filament.tenant.pages.dashboard');
+    });
 });
