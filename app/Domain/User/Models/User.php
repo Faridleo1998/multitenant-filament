@@ -8,12 +8,13 @@ use App\Domain\User\Models\Attributes\UserAttributes;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 use Stancl\Tenancy\Contracts\Syncable;
 use Stancl\Tenancy\Database\Concerns\ResourceSyncing;
 
 class User extends Authenticatable implements Syncable
 {
-    use Notifiable, ResourceSyncing, SoftDeletes;
+    use HasRoles, Notifiable, ResourceSyncing, SoftDeletes;
     use UserAttributes;
 
     protected $fillable = [
