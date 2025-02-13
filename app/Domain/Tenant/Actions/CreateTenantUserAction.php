@@ -5,13 +5,13 @@ namespace App\Domain\Tenant\Actions;
 use App\Domain\Tenant\Models\Tenant;
 use App\Domain\User\Models\CentralUser;
 use App\Domain\User\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Spatie\Permission\Models\Role;
 
 class CreateTenantUserAction
 {
-    public function execute(Tenant $tenant, CentralUser $centralUser, Collection $roles): void
+    public function execute(Tenant $tenant, CentralUser $centralUser, array $rolesIds): void
     {
-        $tenant->run(function () use ($centralUser, $roles) {
+        $tenant->run(function () use ($centralUser, $rolesIds) {
             $user = User::withTrashed()->where('global_id', $centralUser->global_id)->first();
             if ($user) {
                 $user->restore();
@@ -24,7 +24,7 @@ class CreateTenantUserAction
                 ]);
             }
 
-            $user->syncRoles($roles);
+            $user->syncRoles(Role::whereIn('id', $rolesIds)->get());
         });
     }
 }
