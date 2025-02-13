@@ -49,15 +49,18 @@ class TenantResource extends Resource implements HasShieldPermissions
                     ])
                     ->schema([
                         Forms\Components\TextInput::make('identification')
+                            ->label(__('labels.identification'))
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->autocomplete(false),
                         Forms\Components\TextInput::make('name')
+                            ->label(__('labels.name'))
                             ->required()
                             ->autocomplete(false),
                         PhoneInput::make('phone')
                             ->required(),
-                        Forms\Components\TextInput::make('email_contact')
+                        Forms\Components\TextInput::make('email')
+                            ->label(__('labels.email'))
                             ->email()
                             ->nullable(),
                     ]),
@@ -68,9 +71,11 @@ class TenantResource extends Resource implements HasShieldPermissions
                     ])
                     ->schema([
                         Forms\Components\TextInput::make('address')
+                            ->label(__('labels.address'))
                             ->nullable()
                             ->columnSpanFull(),
                         Forms\Components\Select::make('country_id')
+                            ->label(__('labels.country'))
                             ->options(
                                 Country::select(['id', 'name'])
                                     ->pluck('name', 'id')
@@ -85,6 +90,7 @@ class TenantResource extends Resource implements HasShieldPermissions
                                 $set('city_id', null);
                             }),
                         Forms\Components\Select::make('state_id')
+                            ->label(__('labels.state'))
                             ->options(
                                 fn(Get $get): Collection => State::select(['id', 'name'])
                                     ->where('country_id', $get('country_id'))
@@ -96,6 +102,7 @@ class TenantResource extends Resource implements HasShieldPermissions
                             ->live()
                             ->afterStateUpdated(fn(Set $set) => $set('city_id', null)),
                         Forms\Components\Select::make('city_id')
+                            ->label(__('labels.city'))
                             ->options(
                                 fn(Get $get): Collection => City::select(['id', 'name'])
                                     ->where('state_id', $get('state_id'))
@@ -119,13 +126,18 @@ class TenantResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->hidden(! Auth::user()->is_super_admin),
                 Tables\Columns\TextColumn::make('identification')
+                    ->label(__('labels.identification'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('labels.name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label(__('labels.email'))
                     ->placeholder('-'),
-                Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('phone')
+                    ->label(__('labels.phone')),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('labels.created_at'))
                     ->datetime()
                     ->sortable(),
             ])

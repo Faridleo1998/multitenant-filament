@@ -45,15 +45,19 @@ class CentralUserResource extends Resource implements HasShieldPermissions
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label(__('labels.full_name'))
                             ->required()
                             ->maxLength(100),
-                        PhoneInput::make('phone'),
+                        PhoneInput::make('phone')
+                            ->label(__('labels.phone')),
                         Forms\Components\TextInput::make('email')
+                            ->label(__('labels.email'))
                             ->email()
                             ->required()
                             ->maxLength(100)
                             ->unique(ignoreRecord: true),
                         Password::make('password')
+                            ->label(__('labels.password'))
                             ->autocomplete(false)
                             ->regeneratePassword(notify: false)
                             ->copyable()
@@ -85,17 +89,22 @@ class CentralUserResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\Textcolumn::make('name')
+                    ->label(__('labels.full_name'))
                     ->searchable(),
                 Tables\Columns\Textcolumn::make('email')
+                    ->label(__('labels.email'))
                     ->searchable(),
                 Tables\columns\Textcolumn::make('phone')
+                    ->label(__('labels.phone'))
                     ->placeholder('-'),
                 Tables\Columns\TextColumn::make('tenants_count')
+                    ->label(ucfirst(TenantResource::getPluralModelLabel()))
                     ->counts('tenants')
                     ->badge()
                     ->color('success')
                     ->alignCenter(),
                 Tables\Columns\Textcolumn::make('created_at')
+                    ->label(__('labels.created_at'))
                     ->datetime()
                     ->sortable(),
             ])

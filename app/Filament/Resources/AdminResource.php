@@ -43,12 +43,14 @@ class AdminResource extends Resource implements HasShieldPermissions
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label(__('labels.full_name'))
                     ->required()
                     ->columnSpanFull()
                     ->disabled(
                         fn(?Admin $record): bool => $record?->is_super_admin ?? false
                     ),
                 Forms\Components\TextInput::make('email')
+                    ->label(__('labels.email'))
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
@@ -60,6 +62,7 @@ class AdminResource extends Resource implements HasShieldPermissions
                         fn(?Admin $record): bool => $record?->is_super_admin ?? false
                     ),
                 Password::make('password')
+                    ->label(__('labels.password'))
                     ->autocomplete(false)
                     ->regeneratePassword(notify: false)
                     ->maxLength(16)
@@ -99,9 +102,11 @@ class AdminResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('labels.full_name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label(__('labels.email'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')
@@ -109,6 +114,7 @@ class AdminResource extends Resource implements HasShieldPermissions
                     ->color('success')
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('labels.created_at'))
                     ->datetime()
                     ->sortable(),
             ])
