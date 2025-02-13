@@ -6,13 +6,18 @@ use App\Domain\Tenant\Actions\CreateTenantUserAction;
 use App\Domain\Tenant\Actions\RemoveTenantUserAction;
 use App\Domain\Tenant\Models\Tenant;
 use App\Filament\Resources\TenantResource;
+use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\AttachAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 
 class TenantsRelationManager extends RelationManager
 {
@@ -39,20 +44,54 @@ class TenantsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                     ->attachAnother(false)
                     ->preloadRecordSelect()
+                    ->form(
+                        function (AttachAction $action): array {
+                            return [
+                                $action->getRecordSelect()
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set) {
+                                        $set('roles', null);
+                                    }),
+                                Forms\Components\Select::make('roles')
+                                    ->label(__('filament-shield::filament-shield.resource.label.role'))
+                                    ->preload()
+                                    ->searchable()
+                                    ->multiple()
+                                    ->live()
+                                    ->options(function (Get $get): array {
+                                        $recordId = $get('recordId');
+
+                                        if (! $recordId) {
+                                            return [];
+                                        }
+
+                                        $tenantRoles = Tenant::find($recordId)?->run(
+                                            fn() => Role::select('id', 'name', 'guard_name')->get()
+                                        );
+
+                                        return $tenantRoles->pluck('name', 'id')->toArray();
+                                    })
+                                    ->required(),
+                            ];
+                        }
+                    )
                     ->after(
                         function (
+                            array $data,
                             RelationManager $livewire,
                             Tenant $tenant,
                             CreateTenantUserAction $createTenantUserAction
                         ): void {
+                            $rolesIds = $data['roles'];
                             $centralUser = $livewire->getOwnerRecord();
-                            $createTenantUserAction->execute($tenant, $centralUser);
+                            $createTenantUserAction->execute($tenant, $centralUser, $rolesIds);
                         }
                     )
                     ->visible(Gate::allows('attachTenant', $this->getOwnerRecord())),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
                     ->after(
                         function (
