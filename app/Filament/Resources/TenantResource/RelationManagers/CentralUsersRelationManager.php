@@ -93,10 +93,10 @@ class CentralUsersRelationManager extends RelationManager
                             RelationManager $livewire,
                             CentralUser $record,
                             CreateTenantUserAction $createTenantUserAction
-                        ) use ($tenantRoles): void {
-                            $roles = $tenantRoles->whereIn('id', $data['roles']);
+                        ): void {
+                            $rolesIds = $data['roles'];
                             $tenant = $livewire->getOwnerRecord();
-                            $createTenantUserAction->execute($tenant, $record, $roles);
+                            $createTenantUserAction->execute($tenant, $record, $rolesIds);
                         }
                     )
                     ->visible(Gate::allows('attachCentralUser', $this->getOwnerRecord())),
