@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Domain\Tenant\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class TenantFactory extends Factory
 {
@@ -13,7 +14,8 @@ class TenantFactory extends Factory
     {
         return [
             'identification' => fake()->unique()->numerify('##########'),
-            'name' => fake()->name(),
+            'name' => $name = fake()->name(),
+            'domain' => Str::slug($name),
             'phone' => fake()->phoneNumber(),
         ];
     }
