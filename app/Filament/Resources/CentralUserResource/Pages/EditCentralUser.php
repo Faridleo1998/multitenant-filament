@@ -16,7 +16,7 @@ class EditCentralUser extends EditRecord
 
     public function getContentTabIcon(): ?string
     {
-        return 'heroicon-o-home-modern';
+        return 'heroicon-o-users';
     }
 
     public function getContentTabLabel(): ?string
