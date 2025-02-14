@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
@@ -56,7 +57,25 @@ class TenantResource extends Resource implements HasShieldPermissions
                         Forms\Components\TextInput::make('name')
                             ->label(__('labels.name'))
                             ->required()
-                            ->autocomplete(false),
+                            ->maxLength(100)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(
+                                function (Set $set, ?string $state, string $context): void {
+                                    if ($state === null || $state === '' || $context === 'edit') {
+                                        return;
+                                    }
+                                    $set('domain', Str::slug($state));
+                                }
+                            ),
+                        Forms\Components\TextInput::make('domain')
+                            ->label(__('labels.domain'))
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true)
+                            ->notIn([config('system.domain'), 'http://', 'https://', '.'])
+                            ->prefix('https://')
+                            ->suffix('.' . config('system.domain')),
+
                         PhoneInput::make('phone')
                             ->required(),
                         Forms\Components\TextInput::make('email')
@@ -131,6 +150,11 @@ class TenantResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('labels.name'))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('domain.domain')
+                    ->label(__('labels.domain'))
+                    ->badge()
+                    ->color('success')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('labels.email'))
                     ->placeholder('-'),
@@ -147,6 +171,18 @@ class TenantResource extends Resource implements HasShieldPermissions
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make(__('actions.named.view', [
+                        'name' => strtolower(__('labels.site')),
+                    ]))
+                        ->icon('heroicon-m-globe-alt')
+                        ->color('info')
+                        ->url(
+                            fn(Tenant $record): string => 'https://' . $record->load('domains')->domains->first()?->domain
+                        )
+                        ->openUrlInNewTab(),
+                ]),
+
             ]);
     }
 
