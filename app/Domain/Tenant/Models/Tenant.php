@@ -4,14 +4,14 @@ namespace App\Domain\Tenant\Models;
 
 use App\Domain\Tenant\Models\Attributes\TenantAttributes;
 use App\Domain\Tenant\Models\Relationships\TenantRelationships;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
+use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 
 class Tenant extends BaseTenant implements TenantWithDatabase
 {
-    use HasDatabase, HasFactory;
+    use HasDatabase, HasDomains;
     use TenantAttributes, TenantRelationships;
 
     public $incrementing = false;
@@ -32,6 +32,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'id',
             'identification',
             'name',
+            'domain',
             'phone',
             'email_contact',
             'address',
