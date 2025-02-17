@@ -68,6 +68,11 @@ class ShieldSeeder extends Seeder
                     'update_role',
                     'delete_role',
                     'delete_any_role',
+                    'view_any_user',
+                    'view_user',
+                    'create_user',
+                    'update_user',
+                    'delete_user',
                 ],
             ],
             [
