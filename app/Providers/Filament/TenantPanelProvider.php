@@ -38,6 +38,10 @@ class TenantPanelProvider extends PanelProvider
             ->sidebarWidth('20rem')
             ->maxContentWidth('full')
             ->navigationGroups([
+                'Catalog' => NavigationGroup::make()
+                    ->label(__('navigation.catalog'))
+                    ->icon('heroicon-o-square-3-stack-3d')
+                    ->collapsed(),
                 'Settings' => NavigationGroup::make()
                     ->label(__('navigation.settings'))
                     ->icon('heroicon-o-cog-8-tooth')
