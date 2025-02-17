@@ -3,6 +3,7 @@
 namespace App\Domain\User\Models\Attributes;
 
 use App\Domain\User\Models\CentralUser;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait UserAttributes
 {
@@ -19,5 +20,12 @@ trait UserAttributes
     public function getCentralModelName(): string
     {
         return CentralUser::class;
+    }
+
+    protected function name(): Attribute
+    {
+        return new Attribute(
+            set: fn($value): string => ucwords(strtolower($value))
+        );
     }
 }
