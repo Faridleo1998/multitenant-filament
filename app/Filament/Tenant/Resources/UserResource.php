@@ -4,6 +4,7 @@ namespace App\Filament\Tenant\Resources;
 
 use App\Domain\User\Models\User;
 use App\Filament\Tenant\Resources\UserResource\Pages;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
-class UserResource extends Resource
+class UserResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = User::class;
 
