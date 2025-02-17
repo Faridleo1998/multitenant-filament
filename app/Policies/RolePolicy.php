@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
@@ -11,12 +12,12 @@ class RolePolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(Admin $admin): bool
+    public function viewAny(Admin|User $admin): bool
     {
         return $admin->can('view_any_role');
     }
 
-    public function view(Admin $admin, Role $role): bool
+    public function view(Admin|User $admin, Role $role): bool
     {
         $canNotUpdate = Gate::denies('update', $role);
         $canView = $admin->can('view_role');
@@ -24,12 +25,12 @@ class RolePolicy
         return $canNotUpdate && $canView;
     }
 
-    public function create(Admin $admin): bool
+    public function create(Admin|User $admin): bool
     {
         return $admin->can('create_role');
     }
 
-    public function update(Admin $admin, Role $role): bool
+    public function update(Admin|User $admin, Role $role): bool
     {
         $canUpdate = $admin->can('update_role');
         $hasNotRole = ! $admin->hasRole($role->name);
@@ -38,7 +39,7 @@ class RolePolicy
         return $canUpdate && $hasNotRole && $isNotSuperAdmin;
     }
 
-    public function delete(Admin $admin, Role $role): bool
+    public function delete(Admin|User $admin, Role $role): bool
     {
         $hasNotRole = ! $admin->hasRole($role->name);
         $canDelete = $admin->can('delete_role');
