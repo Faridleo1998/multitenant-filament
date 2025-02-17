@@ -17,6 +17,10 @@ return [
         'singular_label' => 'Profesión',
         'plural_label' => 'Profesiones',
     ],
+    'study' => [
+        'singular_label' => 'Estudio',
+        'plural_label' => 'Estudios',
+    ],
     'tenant' => [
         'sections' => [
             'information' => 'Información',
