@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Filament\Actions\MountableAction;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Pages\Page;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables\Actions\Action;
@@ -32,6 +33,10 @@ class FilamentServiceProvider extends ServiceProvider
                 ->dehydrateStateUsing(function (?string $state): ?string {
                     return is_string($state) ? trim($state) : $state;
                 });
+        });
+
+        Toggle::configureUsing(function (Toggle $toggle): void {
+            $toggle->inline(false);
         });
     }
 
