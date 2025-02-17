@@ -9,7 +9,7 @@ trait CentralUserAttributes
     protected function name(): Attribute
     {
         return new Attribute(
-            set: fn($value): string => ucfirst(strtolower($value))
+            set: fn($value): string => ucwords(strtolower($value))
         );
     }
 
