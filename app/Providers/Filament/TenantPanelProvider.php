@@ -42,6 +42,10 @@ class TenantPanelProvider extends PanelProvider
                     ->label(__('navigation.catalog'))
                     ->icon('heroicon-o-square-3-stack-3d')
                     ->collapsed(),
+                'Education' => NavigationGroup::make()
+                    ->label(__('navigation.education'))
+                    ->icon('heroicon-o-academic-cap')
+                    ->collapsed(),
                 'Settings' => NavigationGroup::make()
                     ->label(__('navigation.settings'))
                     ->icon('heroicon-o-cog-8-tooth')
