@@ -79,5 +79,7 @@ return [
 
         'attach_central_user' => 'Vincular usuario',
         'detach_central_user' => 'Desvincular usuario',
+        'attach_tenant' => 'Vincular tenant',
+        'detach_tenant' => 'Desvincular tenant',
     ],
 ];
