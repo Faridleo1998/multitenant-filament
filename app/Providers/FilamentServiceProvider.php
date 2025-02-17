@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Filament\Actions\CreateAction;
 use Filament\Actions\MountableAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -20,10 +21,18 @@ class FilamentServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->actions();
         $this->inputs();
         $this->modals();
         $this->pages();
         $this->tables();
+    }
+
+    public function actions(): void
+    {
+        CreateAction::configureUsing(function (CreateAction $action): void {
+            $action->createAnother(false);
+        });
     }
 
     public function inputs(): void
