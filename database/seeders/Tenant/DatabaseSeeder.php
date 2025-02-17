@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             ShieldSeeder::class,
             CategorySeeder::class,
             TagSeeder::class,
+            KeywordSeeder::class,
         ]);
     }
 }
