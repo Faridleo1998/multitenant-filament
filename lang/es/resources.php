@@ -11,4 +11,8 @@ return [
             'location' => 'Ubicación',
         ],
     ],
+    'user' => [
+        'singular_label' => 'Usuario',
+        'plural_label' => 'Usuarios',
+    ],
 ];
