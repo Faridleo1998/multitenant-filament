@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             TagSeeder::class,
             KeywordSeeder::class,
+            ProfessionSeeder::class,
         ]);
     }
 }
