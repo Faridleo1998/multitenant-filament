@@ -14,4 +14,5 @@ return [
     'address' => 'Dirección',
     'domain' => 'Dominio',
     'site' => 'Sitio',
+    'is_active' => 'Activo',
 ];
