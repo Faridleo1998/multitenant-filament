@@ -9,6 +9,10 @@ return [
         'singular_label' => 'Usuario',
         'plural_label' => 'Usuarios',
     ],
+    'keyword' => [
+        'singular_label' => 'Palabra clave',
+        'plural_label' => 'Palabras clave',
+    ],
     'tenant' => [
         'sections' => [
             'information' => 'Información',
