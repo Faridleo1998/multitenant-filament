@@ -73,6 +73,11 @@ class ShieldSeeder extends Seeder
                     'create_user',
                     'update_user',
                     'delete_user',
+                    'view_any_category',
+                    'view_category',
+                    'create_category',
+                    'update_category',
+                    'delete_category',
                 ],
             ],
             [
