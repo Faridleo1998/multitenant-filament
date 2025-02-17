@@ -13,6 +13,10 @@ return [
         'singular_label' => 'Palabra clave',
         'plural_label' => 'Palabras clave',
     ],
+    'profession' => [
+        'singular_label' => 'Profesión',
+        'plural_label' => 'Profesiones',
+    ],
     'tenant' => [
         'sections' => [
             'information' => 'Información',
