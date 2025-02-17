@@ -4,6 +4,7 @@ namespace App\Filament\Tenant\Resources;
 
 use App\Domain\Classification\Models\Tag;
 use App\Filament\Tenant\Resources\TagResource\Pages;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -11,13 +12,24 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class TagResource extends Resource
+class TagResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Tag::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     protected static ?string $navigationGroup = 'Catalog';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+        ];
+    }
 
     public static function form(Form $form): Form
     {
