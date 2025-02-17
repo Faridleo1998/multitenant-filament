@@ -2,6 +2,6 @@
 
 return [
     'catalog' => 'Catálogo',
-    'Education' => 'Educación',
+    'education' => 'Educación',
     'settings' => 'Configuración',
 ];
