@@ -88,6 +88,11 @@ class ShieldSeeder extends Seeder
                     'create_keyword',
                     'update_keyword',
                     'delete_keyword',
+                    'view_any_profession',
+                    'view_profession',
+                    'create_profession',
+                    'update_profession',
+                    'delete_profession',
                 ],
             ],
             [
