@@ -8,10 +8,14 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class UserResource extends Resource implements HasShieldPermissions
@@ -39,45 +43,64 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label(__('labels.full_name'))
-                            ->required()
-                            ->maxLength(100),
-                        PhoneInput::make('phone')
-                            ->label(__('labels.phone')),
-                        Forms\Components\TextInput::make('email')
-                            ->label(__('labels.email'))
-                            ->email()
-                            ->required()
-                            ->maxLength(100)
-                            ->unique(ignoreRecord: true),
-                        Password::make('password')
-                            ->label(__('labels.password'))
-                            ->autocomplete(false)
-                            ->regeneratePassword(notify: false)
-                            ->copyable()
-                            ->maxLength(16)
-                            ->minLength(8)
-                            ->afterStateHydrated(
-                                function (Forms\Components\TextInput $component): void {
-                                    $component->state('');
-                                }
-                            )
-                            ->dehydrateStateUsing(
-                                fn(?string $state): string => Hash::make($state)
-                            )
-                            ->dehydrated(
-                                fn(?string $state): mixed => filled($state)
-                            )
-                            ->required(
-                                fn(string $context): bool => $context === 'create'
-                            ),
-                    ])
-                    ->columns([
-                        'md' => 2,
-                    ]),
+                Forms\Components\TextInput::make('name')
+                    ->label(__('labels.full_name'))
+                    ->required()
+                    ->maxLength(100)
+                    ->columnSpanFull(),
+                PhoneInput::make('phone')
+                    ->label(__('labels.phone'))
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('email')
+                    ->label(__('labels.email'))
+                    ->email()
+                    ->required()
+                    ->maxLength(100)
+                    ->unique(ignoreRecord: true)
+                    ->columnSpanFull(),
+                Password::make('password')
+                    ->label(__('labels.password'))
+                    ->autocomplete(false)
+                    ->regeneratePassword(notify: false)
+                    ->copyable()
+                    ->maxLength(16)
+                    ->minLength(8)
+                    ->afterStateHydrated(
+                        function (Forms\Components\TextInput $component): void {
+                            $component->state('');
+                        }
+                    )
+                    ->dehydrateStateUsing(
+                        fn(?string $state): string => Hash::make($state)
+                    )
+                    ->dehydrated(
+                        fn(?string $state): mixed => filled($state)
+                    )
+                    ->required(
+                        fn(string $context): bool => $context === 'create'
+                    )
+                    ->columnSpanFull(),
+                Forms\Components\Select::make('roles')
+                    ->relationship(
+                        'roles',
+                        'name',
+                        modifyQueryUsing: function (Builder $query, ?User $record): Builder {
+                            return $record?->hasRole('super_admin')
+                                ? $query
+                                : $query->whereNot('name', 'super_admin');
+                        }
+                    )
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->columnSpanFull()
+                    ->disabled(
+                        fn(?User $record): bool => Auth::id() === $record?->id
+                    ),
+
+            ])
+            ->columns([
+                'md' => 2,
             ]);
     }
 
@@ -103,9 +126,19 @@ class UserResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Impersonate::make()
+                    ->redirectTo('tenant'),
+                Tables\Actions\ViewAction::make()
+                    ->modalWidth(MaxWidth::Small),
+                Tables\Actions\EditAction::make()
+                    ->modalWidth(MaxWidth::Small),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (
+                        User $record,
+                    ): void {
+                        $tenant = tenancy()->tenant;
+                        $tenant->centralUsers()->detach($record->global_id);
+                    }),
             ]);
     }
 
