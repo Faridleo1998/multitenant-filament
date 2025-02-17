@@ -62,6 +62,8 @@ class ShieldSeeder extends Seeder
                 'name' => 'super_admin',
                 'guard_name' => 'web',
                 'permissions' => [
+                    'view_role',
+                    'view_any_role',
                     'create_role',
                     'update_role',
                     'delete_role',
