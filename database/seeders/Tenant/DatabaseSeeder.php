@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             KeywordSeeder::class,
             ProfessionSeeder::class,
+            StudySeeder::class,
         ]);
     }
 }
