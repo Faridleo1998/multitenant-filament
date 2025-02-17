@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ShieldSeeder::class,
             CategorySeeder::class,
+            TagSeeder::class,
         ]);
     }
 }
