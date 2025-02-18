@@ -93,6 +93,11 @@ class ShieldSeeder extends Seeder
                     'create_profession',
                     'update_profession',
                     'delete_profession',
+                    'view_any_study',
+                    'view_study',
+                    'create_study',
+                    'update_study',
+                    'delete_study',
                 ],
             ],
             [
